@@ -15,6 +15,7 @@ async function bootstrap() {
     .setDescription('The Parking API')
     .setDescription('Control all services about parking!`')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

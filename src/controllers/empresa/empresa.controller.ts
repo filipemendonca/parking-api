@@ -9,16 +9,25 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/core/auth/jwt-auth.guard';
 import { EmpresaUpdateDto } from 'src/shared/dtos/empresa/empresa.update.dto';
-import { NotFound } from 'src/shared/helpers/not.found';
+import { NotFound } from '../../shared/helpers/not.found';
 import { EmpresaService } from '../../core/services/empresa.service';
 import { EmpresaDto } from '../../shared/dtos/empresa/empresa.dto';
 import { BadRequest } from '../../shared/helpers/bad.request';
 
 @Controller('api/v1/empresa')
 @ApiTags('Empresa')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class EmpresaController {
   constructor(private empresaService: EmpresaService) {}
 

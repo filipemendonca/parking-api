@@ -9,16 +9,25 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { VeiculosUpdateDto } from '../../shared/dtos/veiculos/veiculos.update.dto';
 import { NotFound } from '../../shared/helpers/not.found';
 import { VeiculosService } from '../../core/services/veiculos.service';
 import { VeiculosDto } from '../../shared/dtos/veiculos/veiculos.dto';
 import { BadRequest } from '../../shared/helpers/bad.request';
+import { JwtAuthGuard } from '../../core/auth/jwt-auth.guard';
 
 @Controller('api/v1/veiculos')
 @ApiTags('Veiculos')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class VeiculosController {
   constructor(private veiculosService: VeiculosService) {}
 

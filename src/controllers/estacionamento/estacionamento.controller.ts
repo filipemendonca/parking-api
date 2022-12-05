@@ -7,16 +7,25 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { EstacionamentoUpdateDto } from '../../shared/dtos/estacionamento/estacionament.update.dto';
 import { EstacionamentoFinalizeDto } from '../../shared/dtos/estacionamento/estacionamento.finalize.dto';
 import { EstacionamentoService } from '../../core/services/estacionamento.service';
 import { EstacionamentoDto } from '../../shared/dtos/estacionamento/estacionamento.dto';
 import { BadRequest } from '../../shared/helpers/bad.request';
+import { JwtAuthGuard } from '../../core/auth/jwt-auth.guard';
 
 @Controller('api/v1/estacionamento')
 @ApiTags('Estacionamento')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class EstacionamentoController {
   constructor(private estacionamentoService: EstacionamentoService) {}
 
