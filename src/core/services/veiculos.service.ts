@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { VeiculosDto } from 'src/shared/dtos/veiculos/veiculos.dto';
+import { VeiculosDto } from '../../shared/dtos/veiculos/veiculos.dto';
 import { EstacionamentoTypeormRepository } from '../data/typeorm/estacionamento.typeorm.repository';
 import { VeiculosTypeormRepository } from '../data/typeorm/veiculos.typeorm.repository';
 import { VeiculosEntity } from '../domain/entities/veiculos.entity';

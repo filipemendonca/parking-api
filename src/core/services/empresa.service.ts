@@ -1,5 +1,5 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { EmpresaDto } from 'src/shared/dtos/empresa/empresa.dto';
+import { EmpresaDto } from '../../shared/dtos/empresa/empresa.dto';
 import { EmpresaTypeormRepository } from '../data/typeorm/empresa.typeorm.repository';
 import { EstacionamentoTypeormRepository } from '../data/typeorm/estacionamento.typeorm.repository';
 import { EmpresaEntity } from '../domain/entities/empresa.entity';

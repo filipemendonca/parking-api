@@ -9,8 +9,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { EstacionamentoUpdateDto } from 'src/shared/dtos/estacionamento/estacionament.update.dto';
-import { EstacionamentoFinalizeDto } from 'src/shared/dtos/estacionamento/estacionamento.finalize.dto';
+import { EstacionamentoUpdateDto } from '../../shared/dtos/estacionamento/estacionament.update.dto';
+import { EstacionamentoFinalizeDto } from '../../shared/dtos/estacionamento/estacionamento.finalize.dto';
 import { EstacionamentoService } from '../../core/services/estacionamento.service';
 import { EstacionamentoDto } from '../../shared/dtos/estacionamento/estacionamento.dto';
 import { BadRequest } from '../../shared/helpers/bad.request';

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EstacionamentoDto } from 'src/shared/dtos/estacionamento/estacionamento.dto';
+import { EstacionamentoDto } from '../../shared/dtos/estacionamento/estacionamento.dto';
 import { EstacionamentoTypeormRepository } from '../data/typeorm/estacionamento.typeorm.repository';
 import { EstacionamentoEntity } from '../domain/entities/estacionamento.entity';
 

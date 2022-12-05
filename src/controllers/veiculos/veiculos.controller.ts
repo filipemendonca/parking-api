@@ -11,8 +11,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { VeiculosUpdateDto } from 'src/shared/dtos/veiculos/veiculos.update.dto';
-import { NotFound } from 'src/shared/helpers/not.found';
+import { VeiculosUpdateDto } from '../../shared/dtos/veiculos/veiculos.update.dto';
+import { NotFound } from '../../shared/helpers/not.found';
 import { VeiculosService } from '../../core/services/veiculos.service';
 import { VeiculosDto } from '../../shared/dtos/veiculos/veiculos.dto';
 import { BadRequest } from '../../shared/helpers/bad.request';
