@@ -37,4 +37,12 @@ export class EstacionamentoTypeormRepository
     const entity = await this.repository.findOneByOrFail({ id });
     await this.repository.remove(entity);
   }
+
+  async existeEmpresa(empresaId: number): Promise<boolean> {
+    return await this.repository.exist({ where: { empresaId } });
+  }
+
+  async existeVeiculo(veiculoId: number): Promise<boolean> {
+    return await this.repository.exist({ where: { veiculoId } });
+  }
 }

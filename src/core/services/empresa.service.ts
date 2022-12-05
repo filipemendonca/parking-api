@@ -1,11 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { EmpresaDto } from 'src/shared/dtos/empresa/empresa.dto';
 import { EmpresaTypeormRepository } from '../data/typeorm/empresa.typeorm.repository';
+import { EstacionamentoTypeormRepository } from '../data/typeorm/estacionamento.typeorm.repository';
 import { EmpresaEntity } from '../domain/entities/empresa.entity';
 
 @Injectable()
 export class EmpresaService {
-  constructor(private readonly repository: EmpresaTypeormRepository) {}
+  constructor(
+    private readonly repository: EmpresaTypeormRepository,
+    private readonly estacionamentoRepository: EstacionamentoTypeormRepository,
+  ) {}
 
   async getById(id: number): Promise<EmpresaEntity> {
     return await this.repository.getById(id);
@@ -24,6 +28,16 @@ export class EmpresaService {
   }
 
   async delete(id: number): Promise<void> {
+    const hasRelationalData = await this.estacionamentoRepository.existeEmpresa(
+      id,
+    );
+
+    if (hasRelationalData) {
+      throw new BadRequestException(
+        'Existe registros relacionados ao estacionamento.',
+      );
+    }
+
     await this.repository.delete(id);
   }
 }

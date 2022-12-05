@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-export class EstacionamentoDto {
+export class EstacionamentoUpdateDto {
   @IsNotEmpty()
   @ApiProperty()
   public veiculoId: number;
@@ -10,7 +10,9 @@ export class EstacionamentoDto {
   @ApiProperty()
   public empresaId: number;
 
-  @IsNotEmpty()
   @ApiProperty()
   public dataEntrada: Date;
+
+  @ApiProperty()
+  public dataSaida: Date;
 }
