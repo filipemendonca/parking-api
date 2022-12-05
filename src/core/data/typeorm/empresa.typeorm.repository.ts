@@ -3,7 +3,7 @@ import { EmpresaEntity } from '../../../core/domain/entities/empresa.entity';
 import { CONSTANTS } from '../../../shared/constants';
 import { Repository } from 'typeorm';
 import { IRepositoryBase } from './interface/repositoryBase';
-import { EmpresaDto } from '../../../shared/dtos/empresa.dto';
+import { EmpresaDto } from '../../../shared/dtos/empresa/empresa.dto';
 
 @Injectable()
 export class EmpresaTypeormRepository
@@ -13,6 +13,10 @@ export class EmpresaTypeormRepository
     @Inject(CONSTANTS.DB_REPOSITORIES.EMPRESA_REPOSITORY)
     protected repository: Repository<EmpresaEntity>,
   ) {}
+
+  async getById(id: number): Promise<EmpresaEntity> {
+    return await this.repository.findOneByOrFail({ id });
+  }
 
   async getAll(): Promise<EmpresaEntity[]> {
     return await this.repository.find();
@@ -29,8 +33,8 @@ export class EmpresaTypeormRepository
     return await this.repository.save(entity);
   }
 
-  async delete(id: number) {
-    await this.repository.findOneByOrFail({ id });
-    await this.repository.softDelete(id);
+  async delete(id: number): Promise<void> {
+    const entity = await this.repository.findOneByOrFail({ id });
+    await this.repository.remove(entity);
   }
 }

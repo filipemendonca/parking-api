@@ -1,7 +1,20 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { EmpresaUpdateDto } from 'src/shared/dtos/empresa/empresa.update.dto';
+import { NotFound } from 'src/shared/helpers/not.found';
 import { EmpresaService } from '../../core/services/empresa.service';
-import { EmpresaDto } from '../../shared/dtos/empresa.dto';
+import { EmpresaDto } from '../../shared/dtos/empresa/empresa.dto';
 import { BadRequest } from '../../shared/helpers/bad.request';
 
 @Controller('api/v1/empresa')
@@ -35,5 +48,42 @@ export class EmpresaController {
   })
   async create(@Body() body: EmpresaDto) {
     return await this.empresaService.create(body);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Atualizar os dados de uma empresa' })
+  @ApiResponse({
+    status: 200,
+    description: 'Empresa atualizada com sucesso',
+    type: EmpresaUpdateDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Dados inválidos',
+    type: EmpresaUpdateDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Empresa não foi encontrada',
+    type: EmpresaUpdateDto,
+  })
+  async update(
+    @Param('id', new ParseIntPipe()) id: number,
+    @Body() body: EmpresaUpdateDto,
+  ) {
+    return await this.empresaService.update(id, body);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Remover uma empresa' })
+  @ApiResponse({ status: 204, description: 'Empresa removida com sucesso' })
+  @ApiResponse({
+    status: 404,
+    description: 'Empresa não foi encontrada',
+    type: NotFound,
+  })
+  async destroy(@Param('id', new ParseIntPipe()) id: number) {
+    await this.empresaService.delete(id);
   }
 }

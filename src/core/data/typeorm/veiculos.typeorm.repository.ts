@@ -3,7 +3,7 @@ import { VeiculosEntity } from '../../../core/domain/entities/veiculos.entity';
 import { CONSTANTS } from '../../../shared/constants';
 import { Repository } from 'typeorm';
 import { IRepositoryBase } from './interface/repositoryBase';
-import { VeiculosDto } from 'src/shared/dtos/veiculos.dto';
+import { VeiculosDto } from 'src/shared/dtos/veiculos/veiculos.dto';
 
 @Injectable()
 export class VeiculosTypeormRepository
@@ -13,6 +13,10 @@ export class VeiculosTypeormRepository
     @Inject(CONSTANTS.DB_REPOSITORIES.VEICULO_REPOSITORY)
     public repository: Repository<VeiculosEntity>,
   ) {}
+
+  async getById(id: number): Promise<VeiculosEntity> {
+    return await this.repository.findOneByOrFail({ id });
+  }
 
   async getAll(): Promise<VeiculosEntity[]> {
     return await this.repository.find({ order: { id: 'ASC' } });
@@ -30,7 +34,7 @@ export class VeiculosTypeormRepository
   }
 
   async delete(id: number) {
-    await this.repository.findOneByOrFail({ id });
-    await this.repository.softDelete(id);
+    const entity = await this.repository.findOneByOrFail({ id });
+    await this.repository.remove(entity);
   }
 }

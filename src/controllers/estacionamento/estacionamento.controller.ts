@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { EstacionamentoService } from '../../core/services/estacionamento.service';
-import { EstacionamentoDto } from '../../shared/dtos/estacionamento.dto';
+import { EstacionamentoDto } from '../../shared/dtos/estacionamento/estacionamento.dto';
 import { BadRequest } from '../../shared/helpers/bad.request';
 
 @Controller('api/v1/estacionamento')
@@ -24,10 +24,10 @@ export class EstacionamentoController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Adicionar uma nova empresa' })
+  @ApiOperation({ summary: 'Efetua a ação de estacionar' })
   @ApiResponse({
     status: 201,
-    description: 'Nova empresa criada com sucesso',
+    description: 'Veículo estacionado com sucesso!',
     type: EstacionamentoDto,
   })
   @ApiResponse({
@@ -35,7 +35,7 @@ export class EstacionamentoController {
     description: 'Parâmetros inválidos',
     type: BadRequest,
   })
-  async create(@Body() body: EstacionamentoDto) {
+  async estacionar(@Body() body: EstacionamentoDto) {
     return await this.estacionamentoService.create(body);
   }
 }

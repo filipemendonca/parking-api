@@ -3,7 +3,7 @@ import { EstacionamentoEntity } from '../../../core/domain/entities/estacionamen
 import { CONSTANTS } from '../../../shared/constants';
 import { Repository } from 'typeorm';
 import { IRepositoryBase } from './interface/repositoryBase';
-import { EstacionamentoDto } from '../../../shared/dtos/estacionamento.dto';
+import { EstacionamentoDto } from '../../../shared/dtos/estacionamento/estacionamento.dto';
 
 @Injectable()
 export class EstacionamentoTypeormRepository
@@ -13,6 +13,10 @@ export class EstacionamentoTypeormRepository
     @Inject(CONSTANTS.DB_REPOSITORIES.ESTACIONAMENTO_REPOSITORY)
     private repository: Repository<EstacionamentoEntity>,
   ) {}
+
+  async getById(id: number): Promise<EstacionamentoEntity> {
+    return await this.repository.findOneByOrFail({ id });
+  }
 
   async getAll(): Promise<EstacionamentoEntity[]> {
     return await this.repository.find();
@@ -30,7 +34,7 @@ export class EstacionamentoTypeormRepository
   }
 
   async delete(id: number) {
-    await this.repository.findOneByOrFail({ id });
-    await this.repository.softDelete(id);
+    const entity = await this.repository.findOneByOrFail({ id });
+    await this.repository.remove(entity);
   }
 }
