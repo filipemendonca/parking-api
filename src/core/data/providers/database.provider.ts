@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 import { VeiculosEntity } from '../../../core/domain/entities/veiculos.entity';
 import { EmpresaEntity } from '../../../core/domain/entities/empresa.entity';
 import { EstacionamentoEntity } from '../../../core/domain/entities/estacionamento.entity';
+import { UsuarioEntity } from 'src/core/domain/entities/usuario.entity';
 
 export const databaseProviders = [
   {
@@ -17,7 +18,12 @@ export const databaseProviders = [
         username: process.env.DATABASE_USER,
         password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_SCHEMA,
-        entities: [VeiculosEntity, EmpresaEntity, EstacionamentoEntity],
+        entities: [
+          VeiculosEntity,
+          EmpresaEntity,
+          EstacionamentoEntity,
+          UsuarioEntity,
+        ],
         synchronize: true,
       });
 
