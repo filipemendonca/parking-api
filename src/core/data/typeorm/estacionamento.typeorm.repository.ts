@@ -23,6 +23,7 @@ export class EstacionamentoTypeormRepository
   }
 
   async create(model: EstacionamentoDto): Promise<EstacionamentoEntity> {
+    model.finalizado = false;
     return await this.repository.save(model);
   }
 

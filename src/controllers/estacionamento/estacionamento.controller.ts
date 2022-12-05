@@ -6,9 +6,11 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { EstacionamentoUpdateDto } from 'src/shared/dtos/estacionamento/estacionament.update.dto';
+import { EstacionamentoFinalizeDto } from 'src/shared/dtos/estacionamento/estacionamento.finalize.dto';
 import { EstacionamentoService } from '../../core/services/estacionamento.service';
 import { EstacionamentoDto } from '../../shared/dtos/estacionamento/estacionamento.dto';
 import { BadRequest } from '../../shared/helpers/bad.request';
@@ -70,5 +72,33 @@ export class EstacionamentoController {
     @Body() body: EstacionamentoUpdateDto,
   ) {
     return await this.estacionamentoService.update(id, body);
+  }
+
+  @Post('/finalizarEstacionamento')
+  @ApiOperation({ summary: 'Finaliza os tramites do estacionamento' })
+  @ApiResponse({
+    status: 200,
+    description: 'Operação realizada com sucesso!',
+    type: EstacionamentoFinalizeDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Dados inválidos',
+    type: EstacionamentoFinalizeDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Registro não foi encontrado',
+    type: EstacionamentoFinalizeDto,
+  })
+  async finalizePark(
+    @Query('id', new ParseIntPipe()) id: number,
+    @Body() body: EstacionamentoFinalizeDto,
+  ) {
+    const model = await this.estacionamentoService.getById(id);
+    model.finalizado = body.finalizado;
+    model.dataSaida = body.dataSaida;
+
+    return await this.estacionamentoService.update(id, model);
   }
 }

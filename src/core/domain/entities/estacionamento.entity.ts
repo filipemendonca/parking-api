@@ -20,4 +20,7 @@ export class EstacionamentoEntity {
 
   @Column({ name: 'data_saida', type: 'datetime', nullable: true })
   public dataSaida?: Date;
+
+  @Column({ name: 'finalizado', type: 'boolean' })
+  public finalizado: boolean;
 }

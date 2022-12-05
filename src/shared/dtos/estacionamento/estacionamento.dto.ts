@@ -13,4 +13,8 @@ export class EstacionamentoDto {
   @IsNotEmpty()
   @ApiProperty()
   public dataEntrada: Date;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  public finalizado: boolean;
 }
