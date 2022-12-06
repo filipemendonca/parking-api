@@ -23,7 +23,7 @@ import { EstacionamentoDto } from '../../shared/dtos/estacionamento/estacionamen
 import { BadRequest } from '../../shared/helpers/bad.request';
 import { JwtAuthGuard } from '../../core/auth/jwt-auth.guard';
 import { EmpresaService } from '../../core/services/empresa.service';
-import { VeiculosService } from 'src/core/services/veiculos.service';
+import { VeiculosService } from '../../core/services/veiculos.service';
 
 @Controller('api/v1/estacionamento')
 @ApiTags('Estacionamento')
@@ -69,9 +69,13 @@ export class EstacionamentoController {
 
       if (empresa && veiculo) {
         if (veiculo.tipo == 'C') {
-          empresa.qtdVagasCarros--;
+          if (empresa.qtdVagasCarros > 0) {
+            empresa.qtdVagasCarros--;
+          }
         } else {
-          empresa.qtdVagasMotos--;
+          if (empresa.qtdVagasMotos > 0) {
+            empresa.qtdVagasMotos--;
+          }
         }
         await this.empresaService.update(body.empresaId, empresa);
       }

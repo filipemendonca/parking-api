@@ -5,7 +5,7 @@ import { BadRequest } from '../../shared/helpers/bad.request';
 import { UsuarioService } from '../../core/services/usuario.service';
 import { UsuarioDto } from '../../shared/dtos/usuario/usuario.dto';
 import { AuthService } from '../../core/services/auth.service';
-import { AuthDto } from 'src/shared/dtos/auth.dto';
+import { AuthDto } from '../../shared/dtos/auth.dto';
 
 @Controller('api/v1/usuario')
 @ApiTags('Usuario')

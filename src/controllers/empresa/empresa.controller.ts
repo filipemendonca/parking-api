@@ -17,8 +17,8 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/core/auth/jwt-auth.guard';
-import { EmpresaUpdateDto } from 'src/shared/dtos/empresa/empresa.update.dto';
+import { JwtAuthGuard } from '../../core/auth/jwt-auth.guard';
+import { EmpresaUpdateDto } from '../../shared/dtos/empresa/empresa.update.dto';
 import { NotFound } from '../../shared/helpers/not.found';
 import { EmpresaService } from '../../core/services/empresa.service';
 import { EmpresaDto } from '../../shared/dtos/empresa/empresa.dto';
