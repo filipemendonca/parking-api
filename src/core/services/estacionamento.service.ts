@@ -36,26 +36,46 @@ export class EstacionamentoService {
     await this.repository.delete(id);
   }
 
-  async entradaSaidaReport(): Promise<ReportsSummaryDto> {
-    const report = new ReportsSummaryDto();
-    const query = 'SELECT * FROM Estacionamento WHERE finalizado = false';
+  async entradaSaidaReport(
+    horaInial?: string,
+    horaFinal?: string,
+  ): Promise<ReportsSummaryDto> {
+    let qtdCarros = 0;
+    let qtdMotos = 0;
+    let qtdNaoFinalizados = 0;
+    let query = '';
+
+    if (horaInial && horaFinal) {
+      query = `SELECT * FROM Estacionamento WHERE HOUR(data_entrada) >= HOUR('${horaInial}') AND HOUR(data_saida) <= HOUR('${horaFinal}')`;
+    } else {
+      query = 'SELECT * FROM Estacionamento';
+    }
+
     const entityArray = await this.repository.getByQuery(query);
 
     if (entityArray) {
-      entityArray.forEach(async (item) => {
-        const { dataEntrada, finalizado, dataSaida } = item;
-        const veiculo = await this.veiculoRepository.getById(item.veiculoId);
-        report.estacionamentoList.push({
-          veiculo,
-          dataEntrada,
-          dataSaida,
-          finalizado,
-        });
-      });
-      report.totalEntradaSaida = entityArray.length;
+      for (let i = 0; i < entityArray.length; i++) {
+        const { veiculoId, finalizado } = entityArray[i];
+        const veiculo = await this.veiculoRepository.getById(veiculoId);
+
+        if (veiculo.tipo === 'C') {
+          qtdCarros++;
+        } else {
+          qtdMotos++;
+        }
+
+        if (!finalizado) {
+          qtdNaoFinalizados++;
+        }
+      }
     }
 
-    return report;
+    return {
+      totalCarros: qtdCarros,
+      totalMotos: qtdMotos,
+      totalNaoFinalizados: qtdNaoFinalizados,
+      totalEntradaSaida: entityArray.length,
+    };
   }
 
   async createRunner(): Promise<QueryRunner> {
