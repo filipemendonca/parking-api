@@ -58,3 +58,5 @@ $ npm run start
 # watch mode
 $ npm run start:dev
 ```
+
+You can access the swagger with this link: http://localhost:{YOUR_PORT}/api
