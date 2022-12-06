@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -21,13 +22,19 @@ import { EstacionamentoService } from '../../core/services/estacionamento.servic
 import { EstacionamentoDto } from '../../shared/dtos/estacionamento/estacionamento.dto';
 import { BadRequest } from '../../shared/helpers/bad.request';
 import { JwtAuthGuard } from '../../core/auth/jwt-auth.guard';
+import { EmpresaService } from '../../core/services/empresa.service';
+import { VeiculosService } from 'src/core/services/veiculos.service';
 
 @Controller('api/v1/estacionamento')
 @ApiTags('Estacionamento')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 export class EstacionamentoController {
-  constructor(private estacionamentoService: EstacionamentoService) {}
+  constructor(
+    private estacionamentoService: EstacionamentoService,
+    private empresaService: EmpresaService,
+    private veiculoService: VeiculosService,
+  ) {}
 
   @Get()
   @ApiOperation({
@@ -56,7 +63,23 @@ export class EstacionamentoController {
     type: BadRequest,
   })
   async park(@Body() body: EstacionamentoDto) {
-    return await this.estacionamentoService.create(body);
+    try {
+      const empresa = await this.empresaService.getById(body.empresaId);
+      const veiculo = await this.veiculoService.getById(body.veiculoId);
+
+      if (empresa && veiculo) {
+        if (veiculo.tipo == 'C') {
+          empresa.qtdVagasCarros--;
+        } else {
+          empresa.qtdVagasMotos--;
+        }
+        await this.empresaService.update(body.empresaId, empresa);
+      }
+
+      return await this.estacionamentoService.create(body);
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
   }
 
   @Put(':id')
@@ -104,10 +127,26 @@ export class EstacionamentoController {
     @Query('id', new ParseIntPipe()) id: number,
     @Body() body: EstacionamentoFinalizeDto,
   ) {
-    const model = await this.estacionamentoService.getById(id);
-    model.finalizado = body.finalizado;
-    model.dataSaida = body.dataSaida;
+    try {
+      const model = await this.estacionamentoService.getById(id);
+      const empresa = await this.empresaService.getById(model.empresaId);
+      const veiculo = await this.veiculoService.getById(model.veiculoId);
 
-    return await this.estacionamentoService.update(id, model);
+      if (empresa && veiculo) {
+        if (veiculo.tipo == 'C') {
+          empresa.qtdVagasCarros++;
+        } else {
+          empresa.qtdVagasMotos++;
+        }
+        await this.empresaService.update(model.empresaId, empresa);
+      }
+
+      model.finalizado = body.finalizado;
+      model.dataSaida = body.dataSaida;
+
+      return await this.estacionamentoService.update(id, model);
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
   }
 }

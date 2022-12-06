@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EstacionamentoEntity } from '../../../core/domain/entities/estacionamento.entity';
 import { CONSTANTS } from '../../../shared/constants';
-import { Repository } from 'typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 import { IRepositoryBase } from './interface/repositoryBase';
 import { EstacionamentoDto } from '../../../shared/dtos/estacionamento/estacionamento.dto';
 
@@ -13,6 +13,14 @@ export class EstacionamentoTypeormRepository
     @Inject(CONSTANTS.DB_REPOSITORIES.ESTACIONAMENTO_REPOSITORY)
     private repository: Repository<EstacionamentoEntity>,
   ) {}
+
+  async createRunner(): Promise<QueryRunner> {
+    return this.repository.queryRunner;
+  }
+
+  async getByQuery(query: string): Promise<EstacionamentoEntity[]> {
+    return await this.repository.query(query);
+  }
 
   async getById(id: number): Promise<EstacionamentoEntity> {
     return await this.repository.findOneByOrFail({ id });

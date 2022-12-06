@@ -19,6 +19,7 @@ import { jwtConstants } from './core/auth/constants';
 import { AuthService } from './core/services/auth.service';
 import { LocalStrategy } from './core/auth/local.strategy';
 import { JwtStrategy } from './core/auth/jwt.strategy';
+import { ReportsController } from './controllers/reports/reports.controller';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { JwtStrategy } from './core/auth/jwt.strategy';
     VeiculosController,
     EmpresaController,
     EstacionamentoController,
+    ReportsController,
   ],
   providers: [
     //JWT
